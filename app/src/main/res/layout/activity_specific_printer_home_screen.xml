@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".specificPrinterHomeScreen">
+
+    <Button
+        android:id="@+id/printerDetails"
+        android:layout_width="285dp"
+        android:layout_height="56dp"
+        android:layout_marginTop="108dp"
+        android:text="@string/details"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/printerFileNewPrint"
+        android:layout_width="285dp"
+        android:layout_height="56dp"
+        android:layout_marginTop="28dp"
+        android:text="@string/record_new_print"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/printerStatistics"
+        android:layout_width="285dp"
+        android:layout_height="56dp"
+        android:layout_marginTop="188dp"
+        android:text="@string/statistics"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/printerSchedule"
+        android:layout_width="285dp"
+        android:layout_height="56dp"
+        android:layout_marginTop="268dp"
+        android:text="@string/schedule"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/printerDelete"
+        android:layout_width="285dp"
+        android:layout_height="56dp"
+        android:layout_marginTop="344dp"
+        android:text="@string/delete_printer"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">3D Printer Tracker</string>
+    <string name="add_printer">Add Printer</string>
+    <string name="update_printer_details">Update Printer Details</string>
+    <string name="printer_name">Printer Name</string>
+    <string name="printer_serial">Printer Serial #</string>
+    <string name="printer_manufacturer">Printer Manufacturer</string>
+    <string name="amount_paid">Purchase Price</string>
+    <string name="purchase_date">Purchase Date</string>
+    <string name="date_purchased">Date Purchased</string>
+    <string name="statistics">Statistics</string>
+    <string name="details">View or Edit Printer Details</string>
+    <string name="schedule">Schedule</string>
+    <string name="delete_printer">Delete Printer</string>
+    <string name="record_new_print">Record New Print</string>
+    <string name="update_details">Update Details</string>
+</resources>
