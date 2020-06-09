@@ -9,6 +9,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".printerScheduler"></activity>
         <activity android:name=".updatePrinterDetails" />
         <activity android:name=".specificPrinterHomeScreen" />
         <activity android:name=".AddPrinterScreen" />

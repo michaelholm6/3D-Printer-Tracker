@@ -42,6 +42,23 @@ public class specificPrinterHomeScreen extends AppCompatActivity implements conf
                 openDialog();
             }
         });
+
+        //Sets up the schedule Print button
+        Button schedulePrint = findViewById(R.id.printerSchedule);
+        schedulePrint.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openPrinterScheduler();
+            }
+        });
+
+    }
+
+    //Function for opening the printer scheduler activity
+    private void openPrinterScheduler()
+    {
+        Intent openPrinterScheduler = new Intent(this, printerScheduler.class);
+        startActivity(openPrinterScheduler);
     }
 
     //Function to open the main activity
