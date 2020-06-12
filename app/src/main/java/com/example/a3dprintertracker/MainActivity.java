@@ -26,7 +26,7 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements confirmGoogleSignOut.confirmGoogleSignOutListener {
 
     //Setting up Main Activity variables
      public static ArrayList<Printer> printerList;
@@ -49,8 +49,7 @@ public class MainActivity extends AppCompatActivity {
         signOutUser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mGoogleSignInClient.revokeAccess();
-                recreate();
+                openDialog();
             }
         });
 
@@ -71,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
         savePrinterList();
 
         //Handles visibility of the signOutUser button
-          final Handler handler = new Handler();
+        final Handler handler = new Handler();
         handler.post(new Runnable() {
             @Override
             public void run() {
@@ -89,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
 
         //If printers exist in the list, this creates a button for all of them, sizes them correctly
         //and sets them to call openSpecificPrinterHomeScreen when clicked
-         if (!printerList.isEmpty())
+        if (!printerList.isEmpty())
         {
             for (int i = 0; i < printerList.size(); i++) {
 
@@ -156,5 +155,17 @@ public class MainActivity extends AppCompatActivity {
         startActivity(openSpecificPrinterHomeScreen);
     }
 
+    //Function to open dialog box when signing out of Google
+    public void openDialog()
+    {
+        confirmGoogleSignOut ConfirmGoogleSignOut = new confirmGoogleSignOut();
+        ConfirmGoogleSignOut.show(getSupportFragmentManager(), "confirm google sign out");
+    }
+
+    //Function to sign out of Google when Yes is clicked
+    @Override
+    public void onYesClicked() {
+       mGoogleSignInClient.revokeAccess();
+    }
     }
 
