@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.Settings;
 import android.text.TextUtils;
 import android.view.View;
@@ -53,15 +54,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        //Setting visibility of the sign out button depending on if user is signed in or not
-        if (GoogleSignIn.getLastSignedInAccount(this) == null) {
-            signOutUser.setVisibility(View.GONE);
-        }
-        else
-        {
-            signOutUser.setVisibility(View.VISIBLE);
-        }
-
         //Setting up local variables for linear layout and add printer button
         LinearLayout printerListScreen = findViewById(R.id.printerListLinLayout);
         Button add_Printer = findViewById(R.id.addPrinterBtn);
@@ -77,6 +69,23 @@ public class MainActivity extends AppCompatActivity {
         //Loads printer list first, then saves it
         loadPrinterList();
         savePrinterList();
+
+        //Handles visibility of the signOutUser button
+          final Handler handler = new Handler();
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                if (GoogleSignIn.getLastSignedInAccount(MainActivity.this) != null)
+                {
+                    signOutUser.setVisibility(View.VISIBLE);
+                }
+                else
+                {
+                    signOutUser.setVisibility(View.INVISIBLE);
+                }
+                handler.postDelayed(this, 500);
+            }
+        });
 
         //If printers exist in the list, this creates a button for all of them, sizes them correctly
         //and sets them to call openSpecificPrinterHomeScreen when clicked

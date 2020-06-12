@@ -46,6 +46,5 @@ private GoogleSignInClient mGoogleSignInClient;
     {
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, 1);
-        MainActivity.signOutUser.setVisibility(View.VISIBLE);
     }
 }
