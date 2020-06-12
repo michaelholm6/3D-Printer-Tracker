@@ -14,6 +14,11 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.api.Scope;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
@@ -21,16 +26,44 @@ import java.util.ArrayList;
 
 
 public class MainActivity extends AppCompatActivity {
-    //Setting up printer ArrayList
-    public static ArrayList<Printer> printerList;
+
+    //Setting up Main Activity variables
+     public static ArrayList<Printer> printerList;
+    public static Button signOutUser;
+    private GoogleSignInClient mGoogleSignInClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //Setting up Google Sign in use
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestScopes(new Scope("https://www.googleapis.com/auth/calendar"))
+                .build();
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+
+        //Setting up Sign Out User button
+        signOutUser = findViewById(R.id.signOutButton);
+        signOutUser.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mGoogleSignInClient.revokeAccess();
+                recreate();
+            }
+        });
+
+        //Setting visibility of the sign out button depending on if user is signed in or not
+        if (GoogleSignIn.getLastSignedInAccount(this) == null) {
+            signOutUser.setVisibility(View.GONE);
+        }
+        else
+        {
+            signOutUser.setVisibility(View.VISIBLE);
+        }
+
         //Setting up local variables for linear layout and add printer button
-         LinearLayout printerListScreen = findViewById(R.id.printerListLinLayout);
+        LinearLayout printerListScreen = findViewById(R.id.printerListLinLayout);
         Button add_Printer = findViewById(R.id.addPrinterBtn);
 
         //Sets up for calling openAddPrinterScreen() when clicking on add printer button
@@ -42,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         //Loads printer list first, then saves it
-         loadPrinterList();
+        loadPrinterList();
         savePrinterList();
 
         //If printers exist in the list, this creates a button for all of them, sizes them correctly
@@ -113,5 +146,6 @@ public class MainActivity extends AppCompatActivity {
         openSpecificPrinterHomeScreen.putExtra("Printer Number", String.valueOf(printer_Number));
         startActivity(openSpecificPrinterHomeScreen);
     }
+
     }
 

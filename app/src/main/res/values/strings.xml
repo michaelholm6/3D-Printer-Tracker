@@ -14,4 +14,6 @@
     <string name="delete_printer">Delete Printer</string>
     <string name="record_new_print">Record New Print</string>
     <string name="update_details">Update Details</string>
+    <string name="signout_of_google">Signout of Google</string>
+    <string name="sign_out_of_google_account">Sign Out of Google Account</string>
 </resources>

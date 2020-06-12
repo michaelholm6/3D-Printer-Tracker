@@ -18,7 +18,7 @@ import com.google.api.services.calendar.model.AclRule;
 public class printerScheduler extends AppCompatActivity {
 
 //object for use of Google API
-GoogleSignInClient mGoogleSignInClient;
+private GoogleSignInClient mGoogleSignInClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,11 +29,7 @@ GoogleSignInClient mGoogleSignInClient;
          GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestScopes(new Scope("https://www.googleapis.com/auth/calendar"))
                 .build();
-        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
-
-        //Process for checking if the user is already signed into google
-        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
-        //updateUI(account);
+         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
         //Sets up the google sign in button
         SignInButton signInButton = findViewById(R.id.sign_in_button);
@@ -46,9 +42,10 @@ GoogleSignInClient mGoogleSignInClient;
     }
 
     //Function for actually signing into google
-    private void signIn()
+     private void signIn()
     {
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, 1);
+        MainActivity.signOutUser.setVisibility(View.VISIBLE);
     }
 }
