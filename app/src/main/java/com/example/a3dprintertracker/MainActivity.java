@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity implements confirmGoogleSign
     public static ArrayList<Printer> printerList;
     public static Button signOutUser;
     private GoogleSignInClient mGoogleSignInClient;
-    int pauseRefresh, test, restartActivity;
+    int pauseRefresh, restartActivity;
     MainActivity mainActivity;
 
 
@@ -100,12 +100,12 @@ public class MainActivity extends AppCompatActivity implements confirmGoogleSign
                 }
                 else if (isOnline() && restartActivity == 1)
                 {
+                    restartActivity = 0;
                     pauseRefresh = 0;
-                    Intent intent = getIntent();
-                    finish();
-                    startActivity(intent);
+                    //Intent intent = getIntent();
+                    recreate();
                 }
-                handler.postDelayed(this, 500);
+                handler.postDelayed(this, 100);
             }
         });
 
@@ -205,7 +205,6 @@ public class MainActivity extends AppCompatActivity implements confirmGoogleSign
     private void showConnectionDialog()
     {
         pauseRefresh = 1;
-        test = 0;
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage("This app requires an internet connection to function, please either connect or close the app.")
                 .setCancelable(false)
