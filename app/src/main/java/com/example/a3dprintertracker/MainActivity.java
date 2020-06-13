@@ -3,9 +3,13 @@ package com.example.a3dprintertracker;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.Settings;
@@ -20,6 +24,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.Scope;
+import com.google.api.services.calendar.model.Setting;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
@@ -29,14 +34,21 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity implements confirmGoogleSignOut.confirmGoogleSignOutListener {
 
     //Setting up Main Activity variables
-     public static ArrayList<Printer> printerList;
+    public static ArrayList<Printer> printerList;
     public static Button signOutUser;
     private GoogleSignInClient mGoogleSignInClient;
+    int pauseRefresh, test, restartActivity;
+    MainActivity mainActivity;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //Tracking if the screen needs to refreshed
+         mainActivity = this;
+        restartActivity = 0;
 
         //Setting up Google Sign in use
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -69,7 +81,7 @@ public class MainActivity extends AppCompatActivity implements confirmGoogleSign
         loadPrinterList();
         savePrinterList();
 
-        //Handles visibility of the signOutUser button
+        //Handles visibility of the signOutUser button and the online notification
         final Handler handler = new Handler();
         handler.post(new Runnable() {
             @Override
@@ -81,6 +93,17 @@ public class MainActivity extends AppCompatActivity implements confirmGoogleSign
                 else
                 {
                     signOutUser.setVisibility(View.INVISIBLE);
+                }
+                if (!isOnline() && mainActivity.hasWindowFocus())
+                {
+                    showConnectionDialog();
+                }
+                else if (isOnline() && restartActivity == 1)
+                {
+                    pauseRefresh = 0;
+                    Intent intent = getIntent();
+                    finish();
+                    startActivity(intent);
                 }
                 handler.postDelayed(this, 500);
             }
@@ -166,6 +189,46 @@ public class MainActivity extends AppCompatActivity implements confirmGoogleSign
     @Override
     public void onYesClicked() {
        mGoogleSignInClient.revokeAccess();
+    }
+
+    //Function to determine whether the user is online or not
+    public boolean isOnline()
+    {
+        ConnectivityManager connMgr = (ConnectivityManager)
+                getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+        return (networkInfo != null && networkInfo.isConnected());
+
+    }
+
+    //Function to bring up the connection status dialog box and manage refreshing the screen
+    private void showConnectionDialog()
+    {
+        pauseRefresh = 1;
+        test = 0;
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("This app requires an internet connection to function, please either connect or close the app.")
+                .setCancelable(false)
+                .setPositiveButton("Connect to WIFI", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        startActivity(new Intent(Settings.ACTION_WIFI_SETTINGS));
+                    }
+                })
+                .setNeutralButton("Connect to Service", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        startActivity(new Intent(Settings.ACTION_DATA_USAGE_SETTINGS));
+                    }
+                })
+                .setNegativeButton("Close app", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        finish();
+                        System.exit(0);
+                    }
+                });
+        AlertDialog alert = builder.create();
+        alert.show();
+        restartActivity = 1;
     }
     }
 
